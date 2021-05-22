@@ -1,20 +1,20 @@
 const express = require("express");
 
-const projectsController = require("../controllers/projects");
+/* const projectsController = require("../controllers/projects");
 const tasksController = require("../controllers/tasks");
 const invoicesController = require("../controllers/invoices");
 const projectStatusesController = require("../controllers/projectStatuses");
 const personsController = require("../controllers/persons");
 const timeRegistrationsController = require("../controllers/timeRegistrations");
-const taskStatusesController = require("../controllers/taskStatuses");
+const taskStatusesController = require("../controllers/taskStatuses"); */
 const companiesController = require("../controllers/companies");
-const teamsController = require("../controllers/teams");
-const isAdmin = require("../util/validators").isAdmin;
+//const teamsController = require("../controllers/teams");
+//const isAdmin = require("../util/validators").isAdmin;
 const router = express.Router();
 
 //GET
 
-router.get("/projects", projectsController.getProjects);
+/* router.get("/projects", projectsController.getProjects);
 
 router.get("/projects/:id", projectsController.getProjectsById);
 
@@ -60,11 +60,11 @@ router.post(
   timeRegistrationsController.createTimeRegistration
 );
 
-router.post("/task_statuses", taskStatusesController.createTaskStatus);
+router.post("/task_statuses", taskStatusesController.createTaskStatus); */
 
-router.post("/companies", isAdmin, companiesController.createCompany);
+router.post("/companies", companiesController.createCompany);
 
-router.post("/teams", isAdmin, teamsController.createTeam);
+/* router.post("/teams", isAdmin, teamsController.createTeam);
 
 //PUT
 router.put("/projects/:id", projectsController.updateProject);
@@ -114,6 +114,6 @@ router.delete("/task_statuses/:id", taskStatusesController.deleteTaskStatus);
 
 router.delete("/companies/:id", isAdmin, companiesController.deleteCompany);
 
-router.delete("/teams/:id", isAdmin, teamsController.deleteTeam);
+router.delete("/teams/:id", isAdmin, teamsController.deleteTeam); */
 
 module.exports = router;

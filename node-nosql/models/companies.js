@@ -1,43 +1,21 @@
-const DataTypes = require("sequelize");
+const getManagementDatabase = require("../util/database").getManagementDatabase;
 
-const sequelize = require("../util/database");
-module.exports = sequelize.define(
-  "companies",
-  {
-    id: {
-      autoIncrement: true,
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-    },
-    name: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-    },
-    contact_name: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
-    },
-    contact_email: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-    },
-    contact_phone: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
-    },
-  },
-  {
-    sequelize,
-    tableName: "companies",
-    timestamps: false,
-    indexes: [
-      {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [{ name: "id" }],
-      },
-    ],
+class Company {
+  constructor(name, contact_name, contact_email, contact_phone) {
+    this.name = name;
+    this.contact_name = contact_name;
+    this.contact_email = contact_email;
+    this.contact_phone = contact_phone;
   }
-);
+
+  save() {
+    const managementDatabase = getManagementDatabase();
+    return managementDatabase
+      .collection("companies")
+      .insertOne(this)
+      .then((result) => console.log(result))
+      .catch((error) => console.error(error));
+  }
+}
+
+module.exports = Company;
