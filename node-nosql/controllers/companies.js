@@ -1,14 +1,14 @@
 const Company = require("../models/companies");
 
-/* exports.getCompany = (req, res, next) => {
+exports.getCompany = (req, res, next) => {
   const companyId = req.params.id;
-  Companies.findByPk(companyId)
+  Company.getById(companyId)
     .then((company) => res.send({ response: company }))
     .catch((err) => {
       console.log(`Error when fetching company with id: ${companyId}`, err);
       return res.sendStatus(400);
     });
-}; */
+};
 
 exports.createCompany = (req, res, next) => {
   const { name, contact_name, contact_email, contact_phone } = req.body;

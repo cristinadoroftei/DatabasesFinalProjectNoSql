@@ -39,10 +39,11 @@ router.get(
   "/task_statuses/:id/project",
   taskStatusesController.getTaskStatusesByProjectId
 );
+*/
 
-router.get("/companies/:id", isAdmin, companiesController.getCompany);
+router.get("/companies/:id", companiesController.getCompany);
 
-router.get("/teams/:id/company", teamsController.getTeamsByCompanyId);
+/* router.get("/teams/:id/company", teamsController.getTeamsByCompanyId);
 
 //POST
 router.post("/projects", projectsController.createProject);
@@ -60,7 +61,7 @@ router.post(
   timeRegistrationsController.createTimeRegistration
 );
 
-router.post("/task_statuses", taskStatusesController.createTaskStatus); */
+router.post("/task_statuses", taskStatusesController.createTaskStatus);  */
 
 router.post("/companies", companiesController.createCompany);
 
