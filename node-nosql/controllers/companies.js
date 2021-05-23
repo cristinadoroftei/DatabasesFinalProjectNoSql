@@ -22,18 +22,25 @@ exports.createCompany = (req, res, next) => {
     .catch((error) => console.log(error));
 };
 
-/* exports.updateCompany = (req, res, next) => {
+exports.updateCompany = (req, res, next) => {
   const companyId = req.params.id;
-  Companies.findByPk(companyId)
-    .then((company) => company.update(req.body))
-    .then((updatedCompany) => res.send({ response: updatedCompany }))
-    .catch((err) => {
-      console.log("Error when updating company!");
-      return res.sendStatus(400);
-    });
+  const { name, contact_name, contact_email, contact_phone } = req.body;
+  const companyToUpdate = new Company(
+    name,
+    contact_name,
+    contact_email,
+    contact_phone,
+    companyId
+  );
+  return companyToUpdate
+    .update()
+    .then((result) => {
+      res.sendStatus(200);
+    })
+    .catch((error) => console.log(error));
 };
 
-exports.deleteCompany = (req, res, next) => {
+/* exports.deleteCompany = (req, res, next) => {
   const companyId = req.params.id;
   Companies.findByPk(companyId)
     .then((company) => company.destroy())
@@ -42,5 +49,4 @@ exports.deleteCompany = (req, res, next) => {
       console.log("Error when deleting company!", err);
       return res.sendStatus(400);
     });
-};
- */
+}; */

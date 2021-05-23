@@ -88,9 +88,11 @@ router.put(
 
 router.put("/task_statuses/:id", taskStatusesController.updateTaskStatus);
 
-router.put("/companies/:id", isAdmin, companiesController.updateCompany);
+*/
 
-router.put("/teams/:id", isAdmin, teamsController.updateTeam);
+router.put("/companies/:id", companiesController.updateCompany);
+
+/* router.put("/teams/:id", isAdmin, teamsController.updateTeam);
 
 //DELETE
 router.delete("/projects/:id", projectsController.deleteProject);
@@ -115,6 +117,6 @@ router.delete("/task_statuses/:id", taskStatusesController.deleteTaskStatus);
 
 router.delete("/companies/:id", isAdmin, companiesController.deleteCompany);
 
-router.delete("/teams/:id", isAdmin, teamsController.deleteTeam); */
+router.delete("/teams/:id", isAdmin, teamsController.deleteTeam);  */
 
 module.exports = router;
