@@ -1,53 +1,36 @@
-/* const mongodb = require("mongodb");
-const removeEmpty = require("../util/helpers").removeEmpty; */
+const mongoose = require("mongoose");
 
-/* class Company {
-  constructor(name, contact_name, contact_email, contact_phone, id) {
-    this.name = name;
-    this.contact_name = contact_name;
-    this.contact_email = contact_email;
-    this.contact_phone = contact_phone;
-    this._id = mongodb.ObjectId(id);
-  }
+const Schema = mongoose.Schema;
 
-  save() {
-    return getManagementDatabase()
-      .collection("companies")
-      .insertOne(this)
-      .then((result) => console.log(result))
-      .catch((error) => console.error(error));
-  }
+const companySchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  contact_name: {
+    type: String,
+    required: false,
+  },
+  contact_email: {
+    type: String,
+    required: false,
+  },
+  contact_phone: {
+    type: String,
+    required: false,
+  },
+  project_statuses: [
+    {
+      name: {
+        type: String,
+        required: true,
+      },
+      category: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
+});
 
-  update() {
-    return getManagementDatabase()
-      .collection("companies")
-      .updateOne({ _id: this._id }, { $set: removeEmpty(this) })
-      .then((updatedCompany) => {
-        console.log(updatedCompany);
-        return updatedCompany;
-      })
-      .catch((error) => console.log(error));
-  }
-
-  static getById(companyId) {
-    return getManagementDatabase()
-      .collection("companies")
-      .findOne({ _id: new mongodb.ObjectId(companyId) })
-      .then((company) => {
-        console.log(company);
-        return company;
-      })
-      .catch((error) => console.log(error));
-  }
-
-  static delete(companyId) {
-    return getManagementDatabase()
-      .collection("companies")
-      .deleteOne({ _id: new mongodb.ObjectId(companyId) })
-      .then((result) => console.log("Company deleted!"))
-      .catch((error) => console.log(error));
-  }
-}
-
-module.exports = Company;
- */
+module.exports = mongoose.model("Company", companySchema);

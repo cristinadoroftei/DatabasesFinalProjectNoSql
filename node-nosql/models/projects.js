@@ -1,86 +1,85 @@
-const DataTypes = require("sequelize");
+const mongoose = require("mongoose");
 
-const sequelize = require("../util/database");
-module.exports = sequelize.define(
-  "projects",
-  {
-    id: {
-      autoIncrement: true,
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-    },
-    company_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "companies",
-        key: "id",
-      },
-    },
-    client_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "companies",
-        key: "id",
-      },
-    },
-    project_status_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "project_statuses",
-        key: "id",
-      },
-    },
-    name: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-    },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    start_date: {
-      type: DataTypes.DATEONLY,
-      allowNull: true,
-    },
-    end_date: {
-      type: DataTypes.DATEONLY,
-      allowNull: true,
-    },
-    billable: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-    },
+const Schema = mongoose.Schema;
+
+const projectSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
   },
-  {
-    sequelize,
-    tableName: "projects",
-    timestamps: false,
-    indexes: [
-      {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [{ name: "id" }],
+  description: {
+    type: String,
+    required: false,
+  },
+  start_date: {
+    type: String,
+    required: false,
+  },
+  end_date: {
+    type: String,
+    required: false,
+  },
+  billable: {
+    type: Boolean,
+    required: false,
+  },
+  persons: [{ type: Schema.Types.ObjectId, ref: "Person", required: false }],
+  company_id: {
+    type: Schema.Types.ObjectId,
+    required: true,
+  },
+  client_id: {
+    type: Schema.Types.ObjectId,
+    required: false,
+  },
+  task_statuses: [
+    {
+      name: {
+        type: String,
+        required: false,
       },
-      {
-        name: "FKProjects588697",
-        using: "BTREE",
-        fields: [{ name: "company_id" }],
+      category: {
+        type: String,
+        required: false,
       },
-      {
-        name: "FKProjects965566",
-        using: "BTREE",
-        fields: [{ name: "client_id" }],
+      applied: {
+        type: Boolean,
+        required: false,
       },
-      {
-        name: "FKProjects548315",
-        using: "BTREE",
-        fields: [{ name: "project_status_id" }],
+    },
+  ],
+  invoices: [
+    {
+      name: {
+        type: String,
+        required: true,
       },
-    ],
-  }
-);
+      notes: {
+        type: String,
+        required: false,
+      },
+      created_date: {
+        type: String,
+        required: true,
+      },
+      due_date: {
+        type: String,
+        required: true,
+      },
+      start_date: {
+        type: String,
+        required: true,
+      },
+      end_date: {
+        type: String,
+        required: true,
+      },
+      paid: {
+        type: Boolean,
+        required: true,
+      },
+    },
+  ],
+});
+
+module.exports = mongoose.model("Project", projectSchema);

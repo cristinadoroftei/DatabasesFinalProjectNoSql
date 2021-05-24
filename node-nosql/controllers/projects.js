@@ -1,4 +1,21 @@
-const Projects = require('../models/projects');
+const Project = require("../models/projects");
+const { removeEmpty, mergeObjWithReqBody } = require("../util/helpers");
+
+const filterReqBody = (reqBody) => {
+  const obj = {
+    name: reqBody.name,
+    description: reqBody.description,
+    start_date: reqBody.start_date,
+    end_date: reqBody.end_date,
+    billable: reqBody.billable,
+    persons: reqBody.persons,
+    company_id: reqBody.company_id,
+    client_id: reqBody.client_id,
+    task_statuses: reqBody.task_statuses,
+    invoices: reqBody.invoices,
+  };
+  return removeEmpty(obj);
+};
 
 exports.getProjects = (req, res, next) => {
   console.log(req.session.person);
@@ -10,59 +27,61 @@ exports.getProjects = (req, res, next) => {
       res.send({ response: projects });
     })
     .catch((err) => {
-      console.log('Error when fetching projects!', err);
+      console.log("Error when fetching projects!", err);
       return res.sendStatus(400);
     });
 };
 
 exports.createProject = (req, res, next) => {
-  Projects.create(req.body)
+  const filteredReqBody = filterReqBody(req.body);
+  const project = new Project(filteredReqBody);
+  project
+    .save()
     .then((project) => res.send({ response: project }))
     .catch((err) => {
-      console.log('Error when creating a new project!', err);
+      console.log("Error when creating a new project!", err);
       return res.sendStatus(400);
     });
 };
 
 exports.getProjectsById = (req, res, next) => {
   const projId = req.params.id;
-  Projects.findByPk(projId)
+  Project.findById(projId)
     .then((project) => {
       res.send({ response: project });
     })
     .catch((err) => {
-      console.log('Error when getting project by id!', err);
+      console.log("Error when getting project by id!", err);
       return res.sendStatus(400);
     });
 };
 
 exports.updateProject = (req, res, next) => {
   const projId = req.params.id;
+  const filteredReqBody = filterReqBody(req.body);
 
-  Projects.findByPk(projId)
+  Project.findById(projId)
     .then((project) => {
-      return project.update(req.body);
+      mergeObjWithReqBody(project, filteredReqBody);
+      return project.save();
     })
     .then((updatedProject) => {
       return res.send({ response: updatedProject });
     })
     .catch((err) => {
-      console.log('error in updating project!', err);
+      console.log("error in updating project!", err);
       return res.sendStatus(400);
     });
 };
 
 exports.deleteProject = (req, res, next) => {
   const projId = req.params.id;
-  Projects.findByPk(projId)
-    .then((project) => {
-      return project.destroy();
-    })
+  Project.findByIdAndRemove(projId)
     .then(() => {
       return res.sendStatus(200);
     })
     .catch((err) => {
-      console.log('error in deleting project', err);
+      console.log("error in deleting project", err);
       return res.sendStatus(400);
     });
 };
