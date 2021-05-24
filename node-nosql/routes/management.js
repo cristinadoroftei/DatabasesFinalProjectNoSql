@@ -1,6 +1,7 @@
 const express = require("express");
 
-/* const projectsController = require("../controllers/projects");
+const projectsController = require("../controllers/projects");
+/*
 const tasksController = require("../controllers/tasks");
 const invoicesController = require("../controllers/invoices");
 const projectStatusesController = require("../controllers/projectStatuses");
@@ -21,7 +22,9 @@ const router = express.Router();
 
 /* router.get("/projects", projectsController.getProjects);
 
+*/
 router.get("/projects/:id", projectsController.getProjectsById);
+/*
 
 router.get("/tasks/:id/project", tasksController.getTasksByProjectId);
 
@@ -52,8 +55,10 @@ router.get("/companies/:id", companiesController.getCompany);
 /* router.get("/teams/:id/company", teamsController.getTeamsByCompanyId);
 
 //POST
+*/
 router.post("/projects", projectsController.createProject);
 
+/*
 router.post("/invoices", invoicesController.createInvoice);
 
 router.post("/project_statuses", projectStatusesController.createProjectStatus);
@@ -77,7 +82,9 @@ router.post("/companies", companiesController.createCompany);
 /* router.post("/teams", isAdmin, teamsController.createTeam);
 
 //PUT
+*/
 router.put("/projects/:id", projectsController.updateProject);
+/*
 
 router.put("/invoices/:id", invoicesController.updateInvoice);
 
@@ -107,7 +114,9 @@ router.put("/companies/:id", companiesController.updateCompany);
 /* router.put("/teams/:id", isAdmin, teamsController.updateTeam);
 
 //DELETE
+*/
 router.delete("/projects/:id", projectsController.deleteProject);
+/*
 
 router.delete("/invoices/:id", invoicesController.deleteInvoice);
 
