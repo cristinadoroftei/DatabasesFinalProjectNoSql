@@ -6,4 +6,11 @@ function removeEmpty(obj) {
   );
 }
 
+function mergeObjWithReqBody(obj, reqBody) {
+  Object.entries(reqBody).forEach(([key, _]) => {
+    obj[key] = reqBody[key];
+  });
+}
+
 exports.removeEmpty = removeEmpty;
+exports.mergeObjWithReqBody = mergeObjWithReqBody;

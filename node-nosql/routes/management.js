@@ -7,7 +7,7 @@ const projectStatusesController = require("../controllers/projectStatuses");
 const personsController = require("../controllers/persons");
 const timeRegistrationsController = require("../controllers/timeRegistrations");
 const taskStatusesController = require("../controllers/taskStatuses"); */
-//const companiesController = require("../controllers/companies");
+const companiesController = require("../controllers/companies");
 //const teamsController = require("../controllers/teams");
 //const isAdmin = require("../util/validators").isAdmin;
 const router = express.Router();
@@ -41,7 +41,7 @@ router.get(
 );
 */
 
-//router.get("/companies/:id", companiesController.getCompany);
+router.get("/companies/:id", companiesController.getCompany);
 
 /* router.get("/teams/:id/company", teamsController.getTeamsByCompanyId);
 
@@ -63,7 +63,7 @@ router.post(
 
 router.post("/task_statuses", taskStatusesController.createTaskStatus);  */
 
-//router.post("/companies", companiesController.createCompany);
+router.post("/companies", companiesController.createCompany);
 
 /* router.post("/teams", isAdmin, teamsController.createTeam);
 
@@ -90,7 +90,7 @@ router.put("/task_statuses/:id", taskStatusesController.updateTaskStatus);
 
 */
 
-//router.put("/companies/:id", companiesController.updateCompany);
+router.put("/companies/:id", companiesController.updateCompany);
 
 /* router.put("/teams/:id", isAdmin, teamsController.updateTeam);
 
@@ -115,7 +115,7 @@ router.delete(
 
 router.delete("/task_statuses/:id", taskStatusesController.deleteTaskStatus);
 */
-//router.delete("/companies/:id", companiesController.deleteCompany);
+router.delete("/companies/:id", companiesController.deleteCompany);
 
 //router.delete("/teams/:id", isAdmin, teamsController.deleteTeam);
 
