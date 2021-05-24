@@ -1,7 +1,9 @@
-function removeIdAndEmpty(obj) {
+function removeEmpty(obj) {
   return Object.fromEntries(
-    Object.entries(obj).filter(([key, value]) => key != "id" && value != null)
+    Object.entries(obj).filter(
+      ([key, value]) => value !== null && value !== undefined
+    )
   );
 }
 
-exports.removeIdAndEmpty = removeIdAndEmpty;
+exports.removeEmpty = removeEmpty;

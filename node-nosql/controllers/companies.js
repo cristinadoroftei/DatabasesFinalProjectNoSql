@@ -40,13 +40,9 @@ exports.updateCompany = (req, res, next) => {
     .catch((error) => console.log(error));
 };
 
-/* exports.deleteCompany = (req, res, next) => {
+exports.deleteCompany = (req, res, next) => {
   const companyId = req.params.id;
-  Companies.findByPk(companyId)
-    .then((company) => company.destroy())
+  Company.delete(companyId)
     .then(() => res.sendStatus(200))
-    .catch((err) => {
-      console.log("Error when deleting company!", err);
-      return res.sendStatus(400);
-    });
-}; */
+    .catch((error) => console.log(error));
+};

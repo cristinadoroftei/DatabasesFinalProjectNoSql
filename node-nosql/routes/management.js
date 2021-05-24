@@ -114,9 +114,9 @@ router.delete(
 );
 
 router.delete("/task_statuses/:id", taskStatusesController.deleteTaskStatus);
+*/
+router.delete("/companies/:id", companiesController.deleteCompany);
 
-router.delete("/companies/:id", isAdmin, companiesController.deleteCompany);
-
-router.delete("/teams/:id", isAdmin, teamsController.deleteTeam);  */
+//router.delete("/teams/:id", isAdmin, teamsController.deleteTeam);
 
 module.exports = router;
