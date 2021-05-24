@@ -39,10 +39,11 @@ router.get(
   "/task_statuses/:id/project",
   taskStatusesController.getTaskStatusesByProjectId
 );
+*/
 
-router.get("/companies/:id", isAdmin, companiesController.getCompany);
+router.get("/companies/:id", companiesController.getCompany);
 
-router.get("/teams/:id/company", teamsController.getTeamsByCompanyId);
+/* router.get("/teams/:id/company", teamsController.getTeamsByCompanyId);
 
 //POST
 router.post("/projects", projectsController.createProject);
@@ -60,7 +61,7 @@ router.post(
   timeRegistrationsController.createTimeRegistration
 );
 
-router.post("/task_statuses", taskStatusesController.createTaskStatus); */
+router.post("/task_statuses", taskStatusesController.createTaskStatus);  */
 
 router.post("/companies", companiesController.createCompany);
 
@@ -87,9 +88,11 @@ router.put(
 
 router.put("/task_statuses/:id", taskStatusesController.updateTaskStatus);
 
-router.put("/companies/:id", isAdmin, companiesController.updateCompany);
+*/
 
-router.put("/teams/:id", isAdmin, teamsController.updateTeam);
+router.put("/companies/:id", companiesController.updateCompany);
+
+/* router.put("/teams/:id", isAdmin, teamsController.updateTeam);
 
 //DELETE
 router.delete("/projects/:id", projectsController.deleteProject);
@@ -111,9 +114,9 @@ router.delete(
 );
 
 router.delete("/task_statuses/:id", taskStatusesController.deleteTaskStatus);
+*/
+router.delete("/companies/:id", companiesController.deleteCompany);
 
-router.delete("/companies/:id", isAdmin, companiesController.deleteCompany);
-
-router.delete("/teams/:id", isAdmin, teamsController.deleteTeam); */
+//router.delete("/teams/:id", isAdmin, teamsController.deleteTeam);
 
 module.exports = router;
