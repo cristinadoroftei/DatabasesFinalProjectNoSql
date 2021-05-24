@@ -4,12 +4,17 @@ const express = require("express");
 const tasksController = require("../controllers/tasks");
 const invoicesController = require("../controllers/invoices");
 const projectStatusesController = require("../controllers/projectStatuses");
+ */
 const personsController = require("../controllers/persons");
+/*
 const timeRegistrationsController = require("../controllers/timeRegistrations");
-const taskStatusesController = require("../controllers/taskStatuses"); */
+const taskStatusesController = require("../controllers/taskStatuses");
+*/
 const companiesController = require("../controllers/companies");
+/*
 //const teamsController = require("../controllers/teams");
 //const isAdmin = require("../util/validators").isAdmin;
+*/
 const router = express.Router();
 
 //GET
@@ -25,12 +30,13 @@ router.get("/invoices", invoicesController.getInvoices);
 router.get("/invoices/:id", invoicesController.getInvoice);
 
 router.get("/project_statuses", projectStatusesController.getProjectStatuses);
+*/
 
-router.get("/persons", isAdmin, personsController.getPersons);
+//router.get("/persons", personsController.getPersons);
 
-router.get("/persons/:id", isAdmin, personsController.getPersonById);
+router.get("/persons/:id", personsController.getPersonById);
 
-router.get(
+/* router.get(
   "/time_registrations/:id/task",
   timeRegistrationsController.getTimeRegistrationByTaskId
 );
@@ -39,7 +45,7 @@ router.get(
   "/task_statuses/:id/project",
   taskStatusesController.getTaskStatusesByProjectId
 );
-*/
+ */
 
 router.get("/companies/:id", companiesController.getCompany);
 
@@ -54,8 +60,11 @@ router.post("/project_statuses", projectStatusesController.createProjectStatus);
 
 router.post("/tasks", tasksController.createTask);
 
-router.post("/persons", isAdmin, personsController.createPerson);
+*/
 
+router.post("/persons", personsController.createPerson);
+
+/*
 router.post(
   "/time_registrations",
   timeRegistrationsController.createTimeRegistration
@@ -79,7 +88,10 @@ router.put(
 
 router.put("/tasks/:id", tasksController.updateTask);
 
-router.put("/persons/:id", isAdmin, personsController.updatePerson);
+*/
+router.put("/persons/:id", personsController.updatePerson);
+
+/*
 
 router.put(
   "/time_registrations/:id",
@@ -106,7 +118,9 @@ router.delete(
 
 router.delete("/tasks/:id", tasksController.deleteTask);
 
-router.delete("/persons/:id", isAdmin, personsController.deletePerson);
+*/
+router.delete("/persons/:id", personsController.deletePerson);
+/*
 
 router.delete(
   "/time_registrations/:id",

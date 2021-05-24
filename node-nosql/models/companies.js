@@ -19,6 +19,18 @@ const companySchema = new Schema({
     type: String,
     required: false,
   },
+  project_statuses: [
+    {
+      name: {
+        type: String,
+        required: true,
+      },
+      category: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
 });
 
 module.exports = mongoose.model("Company", companySchema);

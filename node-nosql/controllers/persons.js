@@ -1,20 +1,34 @@
-const Persons = require('../models/persons');
-const bcrypt = require('bcrypt');
+const Person = require("../models/persons");
+const bcrypt = require("bcrypt");
+const removeEmpty = require("../util/helpers").removeEmpty;
+const mergeObjWithReqBody = require("../util/helpers").mergeObjWithReqBody;
 
+const filterReqBody = (reqBody) => {
+  const obj = {
+    first_name: reqBody.first_name,
+    last_name: reqBody.last_name,
+    user_type: reqBody.user_type,
+    username: reqBody.username,
+    password: reqBody.password,
+    internal_cost: reqBody.internal_cost,
+    company_id: reqBody.company_id,
+  };
+  return removeEmpty(obj);
+};
+
+//TODO -> get them by the req.user.company_id
 exports.getPersons = (req, res, next) => {
-  Persons.findAll({
-    where: { company_id: req.person.company_id },
-  })
+  Persons.find({ company_id: req.person.company_id })
     .then((persons) => res.send({ response: persons }))
     .catch((err) => {
-      console.log('Error when fetching persons!', err);
+      console.log("Error when fetching persons!", err);
       return res.sendStatus(400);
     });
 };
 
 exports.getPersonById = (req, res, next) => {
   const personId = req.params.id;
-  Persons.findByPk(personId)
+  Persons.findById(personId)
     .then((person) => res.send({ response: person }))
     .catch((err) => {
       console.log(`Error when fetching person with id: ${personId}!`, err);
@@ -23,35 +37,41 @@ exports.getPersonById = (req, res, next) => {
 };
 
 exports.createPerson = (req, res, next) => {
-  Persons.create({
-    ...req.body,
-    password: bcrypt.hashSync(req.body.password, 12),
-  })
+  const filteredReqBody = filterReqBody(req.body);
+  const person = new Person({
+    ...filteredReqBody,
+    password: bcrypt.hashSync(filteredReqBody.password, 12),
+  });
+  person
+    .save()
     .then((person) => res.send({ response: person }))
     .catch((err) => {
-      console.log('Error when creating person', err);
+      console.log("Error when creating person", err);
       return res.sendStatus(400);
     });
 };
 
 exports.updatePerson = (req, res, next) => {
   const personId = req.params.id;
-  Persons.findByPk(personId)
-    .then((person) => person.update(req.body))
+  const filteredReqBody = filterReqBody(req.body);
+  Person.findById(personId)
+    .then((person) => {
+      mergeObjWithReqBody(person, filteredReqBody);
+      return person.save();
+    })
     .then((updatedPerson) => res.send({ response: updatedPerson }))
     .catch((err) => {
-      console.log('Error when updating person!', err);
+      console.log("Error when updating person!", err);
       return res.sendStatus(400);
     });
 };
 
 exports.deletePerson = (req, res, next) => {
   const personId = req.params.id;
-  Persons.findByPk(personId)
-    .then((person) => person.destroy())
+  Person.findByIdAndRemove(personId)
     .then(() => res.sendStatus(200))
     .catch((err) => {
-      console.log('Error when deleting person!', err);
+      console.log("Error when deleting person!", err);
       return res.sendStatus(400);
     });
 };
