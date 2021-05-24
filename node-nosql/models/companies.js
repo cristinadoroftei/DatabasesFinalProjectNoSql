@@ -1,8 +1,7 @@
-const mongodb = require("mongodb");
-const getManagementDatabase = require("../util/database").getManagementDatabase;
-const removeEmpty = require("../util/helpers").removeEmpty;
+/* const mongodb = require("mongodb");
+const removeEmpty = require("../util/helpers").removeEmpty; */
 
-class Company {
+/* class Company {
   constructor(name, contact_name, contact_email, contact_phone, id) {
     this.name = name;
     this.contact_name = contact_name;
@@ -51,3 +50,4 @@ class Company {
 }
 
 module.exports = Company;
+ */
