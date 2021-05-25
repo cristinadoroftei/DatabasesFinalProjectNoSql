@@ -8,7 +8,7 @@ const MYSQLSTORE = require("express-mysql-session")(session);
 const options = require("./util/store");
 const sessionStore = new MYSQLSTORE(options);
 
-// const errorController = require("./controllers/error");
+const errorController = require("./controllers/error");
 
 const isAuthenticated = require("./util/validators").isAuthenticated;
 const managementRoutes = require("./routes/management");
@@ -30,14 +30,14 @@ app.use(authRoutes);
 app.use(isAuthenticated);
 app.use(managementRoutes);
 
-//app.get("/500", errorController.get500);
+app.get("/500", errorController.get500);
 
 //keep this always last
-/* app.use(errorController.get404);
+app.use(errorController.get404);
 
 app.use((error, req, res, next) => {
   res.redirect("/500");
-}); */
+});
 
 mongoose
   .connect(
