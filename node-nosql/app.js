@@ -8,11 +8,11 @@ const MYSQLSTORE = require("express-mysql-session")(session);
 const options = require("./util/store");
 const sessionStore = new MYSQLSTORE(options);
 
-/* const errorController = require("./controllers/error");
+// const errorController = require("./controllers/error");
 
-const isAuthenticated = require("./util/validators").isAuthenticated; */
+const isAuthenticated = require("./util/validators").isAuthenticated;
 const managementRoutes = require("./routes/management");
-//const authRoutes = require("./routes/authentication");
+const authRoutes = require("./routes/authentication");
 
 app.use(express.urlencoded());
 app.use(express.json());
@@ -26,8 +26,8 @@ app.use(
   })
 );
 
-//app.use(authRoutes);
-//app.use(isAuthenticated);
+app.use(authRoutes);
+app.use(isAuthenticated);
 app.use(managementRoutes);
 
 //app.get("/500", errorController.get500);
