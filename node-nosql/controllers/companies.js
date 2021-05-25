@@ -26,11 +26,14 @@ exports.getCompany = (req, res, next) => {
 exports.createCompany = (req, res, next) => {
   const filteredReqBody = filterReqBody(req.body);
   const company = new Company(filteredReqBody);
-  company
+  return company
     .save()
     .then((result) => {
       console.log("Company created!");
-      return res.sendStatus(200);
+      if (!req.body.from_signup) {
+        res.sendStatus(200);
+      }
+      return result;
     })
     .catch((error) => console.log(error));
 };

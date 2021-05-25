@@ -18,7 +18,7 @@ const filterReqBody = (reqBody) => {
 
 //TODO -> get them by the req.user.company_id
 exports.getPersons = (req, res, next) => {
-  Persons.find({ company_id: req.person.company_id })
+  Person.find({ company_id: req.person.company_id })
     .then((persons) => res.send({ response: persons }))
     .catch((err) => {
       console.log("Error when fetching persons!", err);
@@ -28,7 +28,7 @@ exports.getPersons = (req, res, next) => {
 
 exports.getPersonById = (req, res, next) => {
   const personId = req.params.id;
-  Persons.findById(personId)
+  Person.findById(personId)
     .then((person) => res.send({ response: person }))
     .catch((err) => {
       console.log(`Error when fetching person with id: ${personId}!`, err);
@@ -44,7 +44,9 @@ exports.createPerson = (req, res, next) => {
   });
   person
     .save()
-    .then((person) => res.send({ response: person }))
+    .then((person) => {
+      return res.send({ response: person });
+    })
     .catch((err) => {
       console.log("Error when creating person", err);
       return res.sendStatus(400);

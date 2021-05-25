@@ -11,6 +11,7 @@ const filterReqBody = (reqBody) => {
     persons: reqBody.persons,
     company_id: reqBody.company_id,
     client_id: reqBody.client_id,
+    applied_status: reqBody.applied_status,
     task_statuses: reqBody.task_statuses,
     invoices: reqBody.invoices,
   };

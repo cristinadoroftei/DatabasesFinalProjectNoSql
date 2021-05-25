@@ -32,6 +32,11 @@ const projectSchema = new Schema({
     type: Schema.Types.ObjectId,
     required: false,
   },
+  applied_status: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: "Company.project_statuses",
+  },
   task_statuses: [
     {
       name: {
@@ -40,10 +45,6 @@ const projectSchema = new Schema({
       },
       category: {
         type: String,
-        required: false,
-      },
-      applied: {
-        type: Boolean,
         required: false,
       },
     },

@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const authController = require("../controllers/auth");
-const Persons = require("../models/persons");
+const Person = require("../models/persons");
 
 const validate = (req, res, next) => {
-  Persons.findOne({ where: { username: req.body.username } }).then((person) => {
+  Person.findOne({ username: req.body.username }).then((person) => {
     if (person) {
       return res.sendStatus(409);
     }
