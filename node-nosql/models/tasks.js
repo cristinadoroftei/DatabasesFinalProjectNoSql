@@ -9,7 +9,7 @@ const taskSchema = new Schema({
   end_date: { type: String, required: false },
   locked_date: { type: String, required: false },
   project_id: { type: Schema.Types.ObjectId, required: true, ref: "Project" },
-  applied_status: {
+  applied_status_id: {
     type: Schema.Types.ObjectId,
     ref: "Project.task_statuses",
     required: true,
