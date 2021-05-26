@@ -4,9 +4,9 @@ require("dotenv").config();
 
 const mongoose = require("mongoose");
 const session = require("express-session");
-const MYSQLSTORE = require("express-mysql-session")(session);
+const MongoDBStore = require("connect-mongodb-session")(session);
 const options = require("./util/store");
-const sessionStore = new MYSQLSTORE(options);
+const sessionStore = new MongoDBStore(options);
 
 const errorController = require("./controllers/error");
 

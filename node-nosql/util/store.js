@@ -1,7 +1,4 @@
 module.exports = {
-  host: process.env.DB_HOST,
-  port: 3306,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_DATABASE,
+  uri: `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASS}@dbfinal.iimye.mongodb.net/management?retryWrites=true&w=majority`,
+  collection: "sessions",
 };
