@@ -6,7 +6,6 @@ exports.isAdmin = (req, res, next) => {
   next();
 };
 exports.isAuthenticated = (req, res, next) => {
-  console.log(req.session);
   if (req.session.person) {
     Person.findOne({ username: req.session.person.username })
       .then((person) => {
@@ -19,6 +18,6 @@ exports.isAuthenticated = (req, res, next) => {
       });
   }
   if (!req.session.person) {
-    return res.sendStatus(400);
+    return res.sendStatus(401);
   }
 };

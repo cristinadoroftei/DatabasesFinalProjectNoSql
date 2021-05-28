@@ -19,10 +19,8 @@ const filterReqBody = (reqBody) => {
 };
 
 exports.getProjects = (req, res, next) => {
-  console.log(req.session.person);
-  req.session.person.getCompany().then((company) => console.log(company));
-  Projects.findAll({
-    where: { company_id: req.person.company_id },
+  Project.find({
+    company_id: req.session.person.company_id,
   })
     .then((projects) => {
       res.send({ response: projects });
