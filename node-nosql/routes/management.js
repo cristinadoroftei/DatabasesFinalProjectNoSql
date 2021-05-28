@@ -20,9 +20,8 @@ const router = express.Router();
 
 //GET
 
-/* router.get("/projects", projectsController.getProjects);
+router.get("/projects", projectsController.getProjects);
 
-*/
 router.get("/projects/:id", projectsController.getProjectsById);
 
 router.get("/tasks/:id/project", tasksController.getTasksByProjectId);

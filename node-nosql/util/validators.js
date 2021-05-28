@@ -19,6 +19,6 @@ exports.isAuthenticated = (req, res, next) => {
       });
   }
   if (!req.session.person) {
-    return res.sendStatus(400);
+    return res.sendStatus(401);
   }
 };
