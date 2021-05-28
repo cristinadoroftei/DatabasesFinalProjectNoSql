@@ -5,7 +5,6 @@ const filterReqBody = (reqBody) => {
   const obj = {
     minutes_registered: reqBody.minutes_registered,
     notes: reqBody.notes,
-    date: reqBody.date,
     locked: reqBody.locked,
   };
   return removeEmpty(obj);
@@ -37,7 +36,11 @@ exports.getTimeRegistrationById = (req, res, next) => {
 };
 
 exports.createTimeRegistration = (req, res, next) => {
-  const newTimeReg = { ...filterReqBody(req.body), person_id: req.person._id };
+  const newTimeReg = {
+    ...filterReqBody(req.body),
+    person_id: req.person._id,
+    date: Date.now(),
+  };
   const taskId = req.params.taskId;
   Task.findByIdAndUpdate(taskId)
     .then((task) => {

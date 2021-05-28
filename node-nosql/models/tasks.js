@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const timeRegistrationSchema = new Schema({
   minutes_registered: { type: Number, required: true },
   notes: { type: String, required: false },
-  date: { type: String, required: true },
+  date: { type: Date, required: true },
   locked: { type: Boolean, required: false },
   person_id: { type: Schema.Types.ObjectId, required: true, ref: "Person" },
 });
@@ -13,9 +13,9 @@ const taskSchema = new Schema({
   name: { type: String, required: true },
   description: { type: String, required: false },
   minutesEstimated: { type: Number, required: true },
-  start_date: { type: String, required: false },
-  end_date: { type: String, required: false },
-  locked_date: { type: String, required: false },
+  start_date: { type: Date, required: false },
+  end_date: { type: Date, required: false },
+  locked_date: { type: Date, required: false },
   project_id: { type: Schema.Types.ObjectId, required: true, ref: "Project" },
   applied_status_id: {
     type: Schema.Types.ObjectId,
