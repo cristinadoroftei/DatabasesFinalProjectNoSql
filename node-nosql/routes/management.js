@@ -36,16 +36,19 @@ router.get("/tasks/:id/project", tasksController.getTasksByProjectId);
 
 router.get("/persons/:id", personsController.getPersonById);
 
-/* router.get(
-  "/time_registrations/:id/task",
+router.get(
+  "/tasks/:taskId/time_registrations",
   timeRegistrationsController.getTimeRegistrationByTaskId
 );
 
 router.get(
-  "/task_statuses/:id/project",
-  taskStatusesController.getTaskStatusesByProjectId
+  "/tasks/:taskId/time_registrations/:timeRegId",
+  timeRegistrationsController.getTimeRegistrationById
 );
- */
+// router.get(
+//   "/task_statuses/:id/project",
+//   taskStatusesController.getTaskStatusesByProjectId
+// );
 
 router.get("/companies/:id", companiesController.getCompany);
 
@@ -64,7 +67,7 @@ router.post("/tasks", tasksController.createTask);
 router.post("/persons", personsController.createPerson);
 
 router.post(
-  "/time_registrations",
+  "/tasks/:taskId/time_registrations",
   timeRegistrationsController.createTimeRegistration
 );
 
@@ -89,16 +92,12 @@ router.put("/tasks/:id", tasksController.updateTask);
 
 router.put("/persons/:id", personsController.updatePerson);
 
-/*
-
 router.put(
-  "/time_registrations/:id",
+  "/tasks/:taskId/time_registrations/:timeRegId",
   timeRegistrationsController.updateTimeRegistration
 );
 
-router.put("/task_statuses/:id", taskStatusesController.updateTaskStatus);
-
-*/
+// router.put("/task_statuses/:id", taskStatusesController.updateTaskStatus);
 
 router.put("/companies/:id", companiesController.updateCompany);
 
@@ -118,15 +117,14 @@ router.delete("/projects/:id", projectsController.deleteProject);
 router.delete("/tasks/:id", tasksController.deleteTask);
 
 router.delete("/persons/:id", personsController.deletePerson);
-/*
 
 router.delete(
-  "/time_registrations/:id",
+  "/tasks/:taskId/time_registrations/:timeRegId",
   timeRegistrationsController.deleteTimeRegistration
 );
 
-router.delete("/task_statuses/:id", taskStatusesController.deleteTaskStatus);
-*/
+// router.delete("/task_statuses/:id", taskStatusesController.deleteTaskStatus);
+
 router.delete("/companies/:id", companiesController.deleteCompany);
 
 //router.delete("/teams/:id", isAdmin, teamsController.deleteTeam);

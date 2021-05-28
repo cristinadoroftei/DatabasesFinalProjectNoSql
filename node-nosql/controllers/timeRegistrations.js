@@ -1,5 +1,5 @@
 const Task = require("../models/tasks");
-const { removeEmpty } = require("../util/helpers");
+const { removeEmpty, mergeObjWithReqBody } = require("../util/helpers");
 
 const filterReqBody = (reqBody) => {
   const obj = {
@@ -12,9 +12,24 @@ const filterReqBody = (reqBody) => {
 };
 
 exports.getTimeRegistrationByTaskId = (req, res, next) => {
-  const taskId = req.params.id;
-  TimeRegistrations.findAll({ where: { task_id: taskId } })
-    .then((timeRegistrations) => res.send({ response: timeRegistrations }))
+  const taskId = req.params.taskId;
+  Task.findById(taskId)
+    .then((task) => res.send({ response: task.time_registrations }))
+    .catch((err) => {
+      console.log(err);
+      return res.sendStatus(400);
+    });
+};
+
+exports.getTimeRegistrationById = (req, res, next) => {
+  const { taskId, timeRegId } = req.params;
+  Task.findById(taskId)
+    .then((task) => {
+      const foundTimeReg = task.time_registrations.find(
+        (timeReg) => timeReg._id.toString() === timeRegId.toString()
+      );
+      res.send({ response: foundTimeReg });
+    })
     .catch((err) => {
       console.log(err);
       return res.sendStatus(400);
@@ -23,18 +38,13 @@ exports.getTimeRegistrationByTaskId = (req, res, next) => {
 
 exports.createTimeRegistration = (req, res, next) => {
   const newTimeReg = { ...filterReqBody(req.body), person_id: req.person._id };
-  const taskId = req.body.task_id;
+  const taskId = req.params.taskId;
   Task.findByIdAndUpdate(taskId)
     .then((task) => {
       task.time_registrations.push(newTimeReg);
       const addedTimeReg =
         task.time_registrations[task.time_registrations.length - 1];
-      task.save((err) => {
-        if (err) {
-          console.log("Error!", err);
-          return res.sendStatus(400);
-        }
-      });
+      task.save();
       return res.status(200).send({ response: addedTimeReg });
     })
     .catch((err) => {
@@ -43,26 +53,40 @@ exports.createTimeRegistration = (req, res, next) => {
     });
 };
 
-// exports.updateTimeRegistration = (req, res, next) => {
-//   const timeRegistrationId = req.params.id;
-//   TimeRegistrations.findByPk(timeRegistrationId)
-//     .then((timeRegistration) => timeRegistration.update(req.body))
-//     .then((updatedTimeRegistration) =>
-//       res.send({ response: updatedTimeRegistration })
-//     )
-//     .catch((err) => {
-//       console.log(err);
-//       return res.sendStatus(400);
-//     });
-// };
+exports.updateTimeRegistration = (req, res, next) => {
+  const { taskId, timeRegId } = req.params;
+  const filteredReqBody = filterReqBody(req.body);
+  Task.findByIdAndUpdate(taskId)
+    .then((task) => {
+      const index = task.time_registrations.findIndex(
+        (timeReg) => timeReg._id.toString() === timeRegId
+      );
+      mergeObjWithReqBody(task.time_registrations[index], filteredReqBody);
+      task.save();
+      return res.status(200).send({ response: task.time_registrations[index] });
+    })
+    .catch((err) => {
+      console.log("Error!", err);
+      return res.sendStatus(400);
+    });
+};
 
-// exports.deleteTimeRegistration = (req, res, next) => {
-//   const timeRegistrationId = req.params.id;
-//   TimeRegistrations.findByPk(timeRegistrationId)
-//     .then((timeRegistration) => timeRegistration.destroy())
-//     .then(() => res.sendStatus(200))
-//     .catch((err) => {
-//       console.log(err);
-//       return res.sendStatus(400);
-//     });
-// };
+exports.deleteTimeRegistration = (req, res, next) => {
+  const { taskId, timeRegId } = req.params;
+  Task.findByIdAndUpdate(taskId)
+    .then((task) => {
+      task.time_registrations.pull(timeRegId);
+      task.save((err) => {
+        if (err) {
+          console.log("Error!", err);
+          return res.sendStatus(400);
+        } else {
+          return res.sendStatus(200);
+        }
+      });
+    })
+    .catch((err) => {
+      console.log("Error!", err);
+      return res.sendStatus(400);
+    });
+};
