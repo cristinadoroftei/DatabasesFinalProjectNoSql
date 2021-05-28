@@ -7,10 +7,10 @@ const tasksController = require("../controllers/tasks");
 // const projectStatusesController = require("../controllers/projectStatuses");
 
 const personsController = require("../controllers/persons");
-/*
+
 const timeRegistrationsController = require("../controllers/timeRegistrations");
-const taskStatusesController = require("../controllers/taskStatuses");
-*/
+// const taskStatusesController = require("../controllers/taskStatuses");
+
 const companiesController = require("../controllers/companies");
 /*
 //const teamsController = require("../controllers/teams");
@@ -63,13 +63,12 @@ router.post("/tasks", tasksController.createTask);
 
 router.post("/persons", personsController.createPerson);
 
-/*
 router.post(
   "/time_registrations",
   timeRegistrationsController.createTimeRegistration
 );
 
-router.post("/task_statuses", taskStatusesController.createTaskStatus);  */
+// router.post("/task_statuses", taskStatusesController.createTaskStatus);
 
 router.post("/companies", companiesController.createCompany);
 
