@@ -1,13 +1,26 @@
-const Projects = require('../models/projects');
-const Tasks = require('../models/tasks');
-const TaskStatuses = require('../models/task_statuses');
+const Task = require("../models/tasks");
+
+const { removeEmpty, mergeObjWithReqBody } = require("../util/helpers");
+
+const filterReqBody = (reqBody) => {
+  const obj = {
+    name: reqBody.name,
+    description: reqBody.description,
+    minutesEstimated: reqBody.minutesEstimated,
+    start_date: reqBody.start_date,
+    end_date: reqBody.end_date,
+    locked_date: reqBody.locked_date,
+    project_id: reqBody.project_id,
+    applied_status_id: reqBody.applied_status_id,
+    time_registrations: reqBody.time_registrations,
+  };
+  return removeEmpty(obj);
+};
 
 exports.getTasksByProjectId = (req, res, next) => {
   const projId = req.params.id;
-  Tasks.findAll({
-    where: {
-      project_id: projId,
-    },
+  Task.find({
+    project_id: projId,
   })
     .then((tasks) => {
       res.send({ tasks: tasks });
@@ -19,8 +32,9 @@ exports.getTasksByProjectId = (req, res, next) => {
 };
 
 exports.createTask = (req, res, next) => {
-  Tasks.create(req.body)
-    .then((task) => res.send({ response: task }))
+  const filteredReqBody = filterReqBody(req.body);
+  Task.create(filteredReqBody)
+    .then((task) => res.status(200).send({ response: task }))
     .catch((err) => {
       console.log(err);
       return res.sendStatus(400);
@@ -29,25 +43,23 @@ exports.createTask = (req, res, next) => {
 
 exports.updateTask = (req, res, next) => {
   const taskId = req.params.id;
-  Tasks.findByPk(taskId)
-    .then((task) => {
-      return task.update(req.body);
-    })
-    .then((updatedTask) => {
-      return res.send({ response: updatedTask });
-    })
-    .catch((err) => {
-      console.log(err);
-      return res.sendStatus(400);
-    });
+  const filteredReqBody = filterReqBody(req.body);
+  Task.findByIdAndUpdate(taskId, filteredReqBody, { new: true }, (err, doc) => {
+    if (doc === null) {
+      console.log("Task not found");
+      res.sendStatus(404);
+    } else if (err) {
+      console.log("Error:", err);
+      res.sendStatus(400);
+    } else {
+      res.status(200).send({ response: doc });
+    }
+  });
 };
 
 exports.deleteTask = (req, res, next) => {
   const taskId = req.params.id;
-  Tasks.findByPk(taskId)
-    .then((task) => {
-      return task.destroy();
-    })
+  Task.findByIdAndRemove(taskId)
     .then(() => {
       return res.sendStatus(200);
     })
@@ -57,22 +69,22 @@ exports.deleteTask = (req, res, next) => {
     });
 };
 
-exports.getTaskStatusesByProjectId = (req, res, next) => {
-  const projId = req.params.id;
+// exports.getTaskStatusesByProjectId = (req, res, next) => {
+//   const projId = req.params.id;
 
-  Projects.findByPk(projId)
-    .then((project) => {
-      //   console.log(Object.keys(Projects.prototype));
-      return project.getTaskStatuses();
-    })
-    .then((taskStatuses) => {
-      res.send({ taskStatuses: taskStatuses });
-    })
-    .catch((err) => {
-      console.log(err);
-      return res.sendStatus(400);
-    });
-};
+//   Projects.findByPk(projId)
+//     .then((project) => {
+//       //   console.log(Object.keys(Projects.prototype));
+//       return project.getTaskStatuses();
+//     })
+//     .then((taskStatuses) => {
+//       res.send({ taskStatuses: taskStatuses });
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//       return res.sendStatus(400);
+//     });
+// };
 
 // exports.assignPersonToTask = (req, res, next) => {
 //   const personId = req.params.id || req.person.id
