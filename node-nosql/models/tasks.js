@@ -1,78 +1,28 @@
-const DataTypes = require("sequelize");
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const sequelize = require("../util/database");
-
-module.exports = sequelize.define(
-  "tasks",
-  {
-    id: {
-      autoIncrement: true,
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-    },
-    project_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "projects",
-        key: "id",
-      },
-    },
-    task_status_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "task_statuses",
-        key: "id",
-      },
-    },
-    name: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-    },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    minutes_estimated: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    start_date: {
-      type: DataTypes.DATEONLY,
-      allowNull: true,
-    },
-    end_date: {
-      type: DataTypes.DATEONLY,
-      allowNull: true,
-    },
-    locked_date: {
-      type: DataTypes.DATEONLY,
-      allowNull: true,
-    },
+const taskSchema = new Schema({
+  name: { type: String, required: true },
+  description: { type: String, required: false },
+  minutesEstimated: { type: Number, required: true },
+  start_date: { type: String, required: false },
+  end_date: { type: String, required: false },
+  locked_date: { type: String, required: false },
+  project_id: { type: Schema.Types.ObjectId, required: true, ref: "Project" },
+  applied_status_id: {
+    type: Schema.Types.ObjectId,
+    ref: "Project.task_statuses",
+    required: true,
   },
-  {
-    sequelize,
-    tableName: "tasks",
-    timestamps: false,
-    indexes: [
-      {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [{ name: "id" }],
-      },
-      {
-        name: "FKTasks528675",
-        using: "BTREE",
-        fields: [{ name: "project_id" }],
-      },
-      {
-        name: "FKTasks111043",
-        using: "BTREE",
-        fields: [{ name: "task_status_id" }],
-      },
-    ],
-  }
-);
+  time_registrations: [
+    {
+      minutes_registered: { type: Number, required: true },
+      notes: { type: String, required: false },
+      date: { type: String, required: true },
+      locked: { type: Boolean, required: false },
+      person_id: { type: Schema.Types.ObjectId, required: true, ref: "Person" },
+    },
+  ],
+});
+
+module.exports = mongoose.model("Task", taskSchema);
