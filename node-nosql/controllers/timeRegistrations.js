@@ -11,15 +11,15 @@ const filterReqBody = (reqBody) => {
   return removeEmpty(obj);
 };
 
-// exports.getTimeRegistrationByTaskId = (req, res, next) => {
-//   const taskId = req.params.id;
-//   TimeRegistrations.findAll({ where: { task_id: taskId } })
-//     .then((timeRegistrations) => res.send({ response: timeRegistrations }))
-//     .catch((err) => {
-//       console.log(err);
-//       return res.sendStatus(400);
-//     });
-// };
+exports.getTimeRegistrationByTaskId = (req, res, next) => {
+  const taskId = req.params.id;
+  TimeRegistrations.findAll({ where: { task_id: taskId } })
+    .then((timeRegistrations) => res.send({ response: timeRegistrations }))
+    .catch((err) => {
+      console.log(err);
+      return res.sendStatus(400);
+    });
+};
 
 exports.createTimeRegistration = (req, res, next) => {
   const newTimeReg = { ...filterReqBody(req.body), person_id: req.person._id };
@@ -29,7 +29,12 @@ exports.createTimeRegistration = (req, res, next) => {
       task.time_registrations.push(newTimeReg);
       const addedTimeReg =
         task.time_registrations[task.time_registrations.length - 1];
-      task.save();
+      task.save((err) => {
+        if (err) {
+          console.log("Error!", err);
+          return res.sendStatus(400);
+        }
+      });
       return res.status(200).send({ response: addedTimeReg });
     })
     .catch((err) => {

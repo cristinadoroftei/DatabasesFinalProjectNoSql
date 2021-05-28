@@ -1,6 +1,14 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const timeRegistrationSchema = new Schema({
+  minutes_registered: { type: Number, required: true },
+  notes: { type: String, required: false },
+  date: { type: String, required: true },
+  locked: { type: Boolean, required: false },
+  person_id: { type: Schema.Types.ObjectId, required: true, ref: "Person" },
+});
+
 const taskSchema = new Schema({
   name: { type: String, required: true },
   description: { type: String, required: false },
@@ -14,15 +22,7 @@ const taskSchema = new Schema({
     ref: "Project.task_statuses",
     required: true,
   },
-  time_registrations: [
-    {
-      minutes_registered: { type: Number, required: true },
-      notes: { type: String, required: false },
-      date: { type: String, required: true },
-      locked: { type: Boolean, required: false },
-      person_id: { type: Schema.Types.ObjectId, required: true, ref: "Person" },
-    },
-  ],
+  time_registrations: [timeRegistrationSchema],
 });
 
 module.exports = mongoose.model("Task", taskSchema);
