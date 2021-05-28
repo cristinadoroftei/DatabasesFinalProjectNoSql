@@ -44,8 +44,7 @@ app.use((error, req, res, next) => {
 // by default, you need to set it to false.
 mongoose
   .connect(
-    `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASS}@dbfinal.iimye.mongodb.net/test-management?retryWrites=true&w=majority`,
-    { useFindAndModify: false }
+    `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASS}@dbfinal.iimye.mongodb.net/management?retryWrites=true&w=majority`
   )
   .then(() => {
     console.log("Connected to the database!");
