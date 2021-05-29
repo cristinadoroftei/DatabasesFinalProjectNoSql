@@ -2,6 +2,25 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
+const statusSchema = new Schema({
+  name: { type: String, required: true },
+  category: {
+    type: String,
+    enum: ["TODO", "INPROGRESS", "DONE"],
+    required: true,
+  },
+});
+
+const invoiceSchema = new Schema({
+  name: { type: String, required: true },
+  notes: { type: String, required: false },
+  created_date: { type: Date, required: true, default: Date.now() },
+  due_date: { type: Date, required: true },
+  start_date: { type: Date, required: true },
+  end_date: { type: Date, required: true },
+  paid: { type: Boolean, required: false },
+});
+
 const projectSchema = new Schema({
   name: { type: String, required: true },
   description: { type: String, required: false },
@@ -16,23 +35,8 @@ const projectSchema = new Schema({
     required: true,
     ref: "Company.project_statuses",
   },
-  task_statuses: [
-    {
-      name: { type: String, required: false },
-      category: { type: String, required: false },
-    },
-  ],
-  invoices: [
-    {
-      name: { type: String, required: true },
-      notes: { type: String, required: false },
-      created_date: { type: Date, required: true, default: Date.now() },
-      due_date: { type: Date, required: true },
-      start_date: { type: Date, required: true },
-      end_date: { type: Date, required: true },
-      paid: { type: Boolean, required: true },
-    },
-  ],
+  task_statuses: [statusSchema],
+  invoices: [invoiceSchema],
 });
 
 module.exports = mongoose.model("Project", projectSchema);
