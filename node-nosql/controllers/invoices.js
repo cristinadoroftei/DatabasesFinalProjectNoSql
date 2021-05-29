@@ -1,8 +1,21 @@
-const Invoices = require("../models/invoices");
-const Projects = require("../models/projects");
+const Project = require("../models/projects");
+const { mergeObjWithReqBody, removeEmpty } = require("../util/helpers");
+
+const filterReqBody = (reqBody) => {
+  const obj = {
+    name: reqBody.name,
+    notes: reqBody.notes,
+    created_date: reqBody.created_date,
+    due_date: reqBody.due_date,
+    start_date: reqBody.start_date,
+    end_date: reqBody.end_date,
+    paid: reqBody.paid,
+  };
+  return removeEmpty(obj);
+};
 
 exports.getInvoices = (req, res, next) => {
-  Projects.find({
+  Project.find({
     company_id: req.person.company_id,
   })
     .then((projects) => {
@@ -20,8 +33,10 @@ exports.getInvoices = (req, res, next) => {
 
 exports.getInvoice = (req, res, next) => {
   const invoiceId = req.params.id;
-  Invoices.findByPk(invoiceId)
-    .then((invoice) => {
+
+  Project.findOne({ "invoices._id": invoiceId })
+    .then((project) => {
+      const invoice = project.invoices.id(invoiceId);
       return res.send({ response: invoice });
     })
     .catch((err) => {
@@ -31,40 +46,52 @@ exports.getInvoice = (req, res, next) => {
 };
 
 exports.updateInvoice = (req, res, next) => {
-  const invoiceId = req.params.id;
-  Invoices.findByPk(invoiceId)
-    .then((invoice) => {
-      return invoice.update(req.body);
+  const { invoiceId, projectId } = req.params;
+  const filteredReqBody = filterReqBody(req.body);
+  Project.findByIdAndUpdate(projectId)
+    .then((project) => {
+      const index = project.invoices.findIndex(
+        (invoice) => invoice._id.toString() === invoiceId.toString()
+      );
+      mergeObjWithReqBody(project.invoices[index], filteredReqBody);
+      project.save();
+      return res.status(200).send({ response: project.invoices[index] });
     })
-    .then((updatedInvoice) => {
-      return res.send({ response: updatedInvoice });
-    })
-    .catch((err) => {
-      console.log(err);
+    .catch((error) => {
+      console.log(error);
       return res.sendStatus(400);
     });
 };
 
 exports.deleteInvoice = (req, res, next) => {
-  const invoiceId = req.params.id;
-  Invoices.findByPk(invoiceId)
-    .then((invoice) => {
-      return invoice.destroy();
+  const { invoiceId, projectId } = req.params;
+
+  Project.findById(projectId)
+    .then((project) => {
+      project.invoices.pull(invoiceId);
+      return project.save();
     })
     .then(() => {
       return res.sendStatus(200);
     })
-    .catch((err) => {
-      console.log("error in deleting invoice", err);
+    .catch((error) => {
+      console.log(error);
       return res.sendStatus(400);
     });
 };
 
 exports.createInvoice = (req, res, next) => {
-  Invoices.create(req.body)
-    .then((invoice) => res.send({ response: invoice }))
-    .catch((err) => {
-      console.log("Error when creating invoice", err);
+  const projectId = req.params.projectId;
+  const filteredReqBody = filterReqBody(req.body);
+  Project.findById(projectId)
+    .then((project) => {
+      project.invoices.push(filteredReqBody);
+      const addedInvoice = project.invoices[project.invoices.length - 1];
+      project.save();
+      return res.status(200).send({ response: addedInvoice });
+    })
+    .catch((error) => {
+      console.log(error);
       return res.sendStatus(400);
     });
 };
