@@ -3,7 +3,7 @@ const express = require("express");
 const projectsController = require("../controllers/projects");
 
 const tasksController = require("../controllers/tasks");
-// const invoicesController = require("../controllers/invoices");
+const invoicesController = require("../controllers/invoices");
 // const projectStatusesController = require("../controllers/projectStatuses");
 
 const personsController = require("../controllers/persons");
@@ -26,9 +26,9 @@ router.get("/projects/:id", projectsController.getProjectsById);
 
 router.get("/tasks/:id/project", tasksController.getTasksByProjectId);
 
-// router.get("/invoices", invoicesController.getInvoices);
+router.get("/invoices", invoicesController.getInvoices);
 
-// router.get("/invoices/:id", invoicesController.getInvoice);
+router.get("/invoices/:id", invoicesController.getInvoice);
 
 // router.get("/project_statuses", projectStatusesController.getProjectStatuses);
 
@@ -58,7 +58,7 @@ router.get("/companies/:id", companiesController.getCompany);
 */
 router.post("/projects", projectsController.createProject);
 
-// router.post("/invoices", invoicesController.createInvoice);
+router.post("/invoices/:projectId", invoicesController.createInvoice);
 
 // router.post("/project_statuses", projectStatusesController.createProjectStatus);
 
@@ -81,7 +81,10 @@ router.post("/companies", companiesController.createCompany);
 */
 router.put("/projects/:id", projectsController.updateProject);
 
-// router.put("/invoices/:id", invoicesController.updateInvoice);
+router.put(
+  "/projects/:projectId/invoices/:invoiceId",
+  invoicesController.updateInvoice
+);
 
 // router.put(
 //   "/project_statuses/:id",
@@ -107,7 +110,10 @@ router.put("/companies/:id", companiesController.updateCompany);
 */
 router.delete("/projects/:id", projectsController.deleteProject);
 
-// router.delete("/invoices/:id", invoicesController.deleteInvoice);
+router.delete(
+  "/projects/:projectId/invoices/:invoiceId",
+  invoicesController.deleteInvoice
+);
 
 // router.delete(
 //   "/project_statuses/:id",
