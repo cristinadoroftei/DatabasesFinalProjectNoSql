@@ -25,6 +25,20 @@ exports.getCompany = (req, res, next) => {
 
 exports.createCompany = (req, res, next) => {
   const filteredReqBody = filterReqBody(req.body);
+  filteredReqBody.project_statuses = [
+    {
+      name: "Planning",
+      category: "TODO",
+    },
+    {
+      name: "Running",
+      category: "INPROGRESS",
+    },
+    {
+      name: "Done",
+      category: "DONE",
+    },
+  ];
   const company = new Company(filteredReqBody);
   return company
     .save()
