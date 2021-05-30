@@ -8,10 +8,9 @@ const personsController = require("../controllers/persons");
 const timeRegistrationsController = require("../controllers/timeRegistrations");
 const taskStatusesController = require("../controllers/taskStatuses");
 const companiesController = require("../controllers/companies");
-/*
-//const teamsController = require("../controllers/teams");
-//const isAdmin = require("../util/validators").isAdmin;
-*/
+const teamsController = require("../controllers/teams");
+const isAdmin = require("../util/validators").isAdmin;
+
 const router = express.Router();
 
 //GET
@@ -61,10 +60,10 @@ router.get(
 
 router.get("/companies/:id", companiesController.getCompany);
 
-/* router.get("/teams/:id/company", teamsController.getTeamsByCompanyId);
+router.get("/teams", teamsController.getTeams);
 
 //POST
-*/
+
 router.post("/projects", projectsController.createProject);
 
 router.post("/invoices/:projectId", invoicesController.createInvoice);
@@ -90,10 +89,10 @@ router.post(
 
 router.post("/companies", companiesController.createCompany);
 
-/* router.post("/teams", isAdmin, teamsController.createTeam);
+router.post("/teams", isAdmin, teamsController.createTeam);
 
 //PUT
-*/
+
 router.put("/projects/:id", projectsController.updateProject);
 
 router.put(
@@ -122,10 +121,10 @@ router.put(
 
 router.put("/companies/:id", companiesController.updateCompany);
 
-/* router.put("/teams/:id", isAdmin, teamsController.updateTeam);
+router.put("/teams/:teamId", isAdmin, teamsController.updateTeam);
 
 //DELETE
-*/
+
 router.delete("/projects/:id", projectsController.deleteProject);
 
 router.delete(
@@ -154,6 +153,6 @@ router.delete(
 
 router.delete("/companies/:id", companiesController.deleteCompany);
 
-//router.delete("/teams/:id", isAdmin, teamsController.deleteTeam);
+router.delete("/teams/:teamId", isAdmin, teamsController.deleteTeam);
 
 module.exports = router;

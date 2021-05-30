@@ -38,17 +38,22 @@ exports.getTimeRegistrationById = (req, res, next) => {
 exports.createTimeRegistration = (req, res, next) => {
   const newTimeReg = {
     ...filterReqBody(req.body),
-    person_id: req.person._id,
+    person_id: req.session.person._id,
     date: new Date().setUTCHours(0, 0, 0, 0),
   };
   const taskId = req.params.taskId;
-  Task.findByIdAndUpdate(taskId)
+  Task.findById(taskId)
     .then((task) => {
       task.time_registrations.push(newTimeReg);
       const addedTimeReg =
         task.time_registrations[task.time_registrations.length - 1];
-      task.save();
-      return res.status(200).send({ response: addedTimeReg });
+      task.save((err) => {
+        if (err) {
+          console.log("Error!", err);
+          return res.sendStatus(400);
+        }
+        return res.status(200).send({ response: addedTimeReg });
+      });
     })
     .catch((err) => {
       console.log("Error!", err);
@@ -59,14 +64,21 @@ exports.createTimeRegistration = (req, res, next) => {
 exports.updateTimeRegistration = (req, res, next) => {
   const { taskId, timeRegId } = req.params;
   const filteredReqBody = filterReqBody(req.body);
-  Task.findByIdAndUpdate(taskId)
+  Task.findById(taskId)
     .then((task) => {
       const index = task.time_registrations.findIndex(
         (timeReg) => timeReg._id.toString() === timeRegId
       );
       mergeObjWithReqBody(task.time_registrations[index], filteredReqBody);
-      task.save();
-      return res.status(200).send({ response: task.time_registrations[index] });
+      task.save((err) => {
+        if (err) {
+          console.log("Error!", err);
+          return res.sendStatus(400);
+        }
+        return res
+          .status(200)
+          .send({ response: task.time_registrations[index] });
+      });
     })
     .catch((err) => {
       console.log("Error!", err);
@@ -76,16 +88,15 @@ exports.updateTimeRegistration = (req, res, next) => {
 
 exports.deleteTimeRegistration = (req, res, next) => {
   const { taskId, timeRegId } = req.params;
-  Task.findByIdAndUpdate(taskId)
+  Task.findById(taskId)
     .then((task) => {
       task.time_registrations.pull(timeRegId);
       task.save((err) => {
         if (err) {
           console.log("Error!", err);
           return res.sendStatus(400);
-        } else {
-          return res.sendStatus(200);
         }
+        return res.sendStatus(200);
       });
     })
     .catch((err) => {
