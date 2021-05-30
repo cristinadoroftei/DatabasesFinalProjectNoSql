@@ -2,7 +2,7 @@ const Person = require("../models/persons");
 
 exports.isAdmin = (req, res, next) => {
   const userType = req.person.user_type;
-  if (userType !== "ADMIN") return res.sendStatus(400);
+  if (userType !== "ADMIN") return res.sendStatus(401);
   next();
 };
 exports.isAuthenticated = (req, res, next) => {
