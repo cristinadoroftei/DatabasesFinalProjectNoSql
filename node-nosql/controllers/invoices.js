@@ -48,14 +48,19 @@ exports.getInvoice = (req, res, next) => {
 exports.updateInvoice = (req, res, next) => {
   const { invoiceId, projectId } = req.params;
   const filteredReqBody = filterReqBody(req.body);
-  Project.findByIdAndUpdate(projectId)
+  Project.findById(projectId)
     .then((project) => {
       const index = project.invoices.findIndex(
         (invoice) => invoice._id.toString() === invoiceId.toString()
       );
       mergeObjWithReqBody(project.invoices[index], filteredReqBody);
-      project.save();
-      return res.status(200).send({ response: project.invoices[index] });
+      project.save((err) => {
+        if (err) {
+          console.log("Error!", err);
+          return res.sendStatus(400);
+        }
+        return res.status(200).send({ response: project.invoices[index] });
+      });
     })
     .catch((error) => {
       console.log(error);
@@ -87,8 +92,13 @@ exports.createInvoice = (req, res, next) => {
     .then((project) => {
       project.invoices.push(filteredReqBody);
       const addedInvoice = project.invoices[project.invoices.length - 1];
-      project.save();
-      return res.status(200).send({ response: addedInvoice });
+      project.save((err) => {
+        if (err) {
+          console.log("Error!", err);
+          return res.sendStatus(400);
+        }
+        return res.status(200).send({ response: addedInvoice });
+      });
     })
     .catch((error) => {
       console.log(error);

@@ -41,7 +41,7 @@ exports.getTaskStatusesById = (req, res, next) => {
 exports.createTaskStatus = (req, res, next) => {
   const projectId = req.params.id;
   const newTaskStatus = filterReqBody(req.body);
-  Project.findByIdAndUpdate(projectId)
+  Project.findById(projectId)
     .then((project) => {
       project.task_statuses.push(newTaskStatus);
       const addedTaskStatus =
@@ -63,14 +63,19 @@ exports.createTaskStatus = (req, res, next) => {
 exports.updateTaskStatus = (req, res, next) => {
   const { statusId, projectId } = req.params;
   const updatedStatus = filterReqBody(req.body);
-  Project.findByIdAndUpdate(projectId)
+  Project.findById(projectId)
     .then((project) => {
       const index = project.task_statuses.findIndex(
         (status) => status._id.toString() === statusId.toString()
       );
       mergeObjWithReqBody(project.task_statuses[index], updatedStatus);
-      project.save();
-      return res.status(200).send({ response: project.task_statuses[index] });
+      project.save((err) => {
+        if (err) {
+          console.log("Error!", err);
+          return res.sendStatus(400);
+        }
+        return res.status(200).send({ response: project.task_statuses[index] });
+      });
     })
     .catch((err) => {
       console.log(err);
@@ -80,16 +85,15 @@ exports.updateTaskStatus = (req, res, next) => {
 
 exports.deleteTaskStatus = (req, res, next) => {
   const { statusId, projectId } = req.params;
-  Project.findByIdAndUpdate(projectId)
+  Project.findById(projectId)
     .then((project) => {
       project.task_statuses.pull(statusId);
       project.save((err) => {
         if (err) {
           console.log("Error!", err);
           return res.sendStatus(400);
-        } else {
-          return res.sendStatus(200);
         }
+        return res.sendStatus(200);
       });
     })
     .catch((err) => {

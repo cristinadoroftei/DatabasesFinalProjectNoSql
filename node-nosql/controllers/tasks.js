@@ -68,24 +68,3 @@ exports.deleteTask = (req, res, next) => {
       return res.sendStatus(400);
     });
 };
-
-// exports.getTaskStatusesByProjectId = (req, res, next) => {
-//   const projId = req.params.id;
-
-//   Projects.findByPk(projId)
-//     .then((project) => {
-//       //   console.log(Object.keys(Projects.prototype));
-//       return project.getTaskStatuses();
-//     })
-//     .then((taskStatuses) => {
-//       res.send({ taskStatuses: taskStatuses });
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//       return res.sendStatus(400);
-//     });
-// };
-
-// exports.assignPersonToTask = (req, res, next) => {
-//   const personId = req.params.id || req.person.id
-// };
