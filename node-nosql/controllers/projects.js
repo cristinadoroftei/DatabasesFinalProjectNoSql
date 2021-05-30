@@ -33,6 +33,20 @@ exports.getProjects = (req, res, next) => {
 
 exports.createProject = (req, res, next) => {
   const filteredReqBody = filterReqBody(req.body);
+  filteredReqBody.task_statuses = [
+    {
+      name: "To do",
+      category: "TODO",
+    },
+    {
+      name: "In progress",
+      category: "INPROGRESS",
+    },
+    {
+      name: "Done",
+      category: "DONE",
+    },
+  ];
   const project = new Project(filteredReqBody);
   project
     .save()

@@ -39,7 +39,7 @@ exports.createTimeRegistration = (req, res, next) => {
   const newTimeReg = {
     ...filterReqBody(req.body),
     person_id: req.session.person._id,
-    date: Date.now(),
+    date: new Date().setUTCHours(0, 0, 0, 0),
   };
   const taskId = req.params.taskId;
   Task.findById(taskId)

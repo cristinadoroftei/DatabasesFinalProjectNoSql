@@ -25,12 +25,24 @@ exports.getCompany = (req, res, next) => {
 
 exports.createCompany = (req, res, next) => {
   const filteredReqBody = filterReqBody(req.body);
-  console.log(filteredReqBody);
+  filteredReqBody.project_statuses = [
+    {
+      name: "Planning",
+      category: "TODO",
+    },
+    {
+      name: "Running",
+      category: "INPROGRESS",
+    },
+    {
+      name: "Done",
+      category: "DONE",
+    },
+  ];
   const company = new Company(filteredReqBody);
   return company
     .save()
     .then((result) => {
-      console.log(result);
       console.log("Company created!");
       if (!req.body.from_signup) {
         res.sendStatus(200);
