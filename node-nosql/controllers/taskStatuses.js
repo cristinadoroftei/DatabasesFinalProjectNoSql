@@ -46,8 +46,13 @@ exports.createTaskStatus = (req, res, next) => {
       project.task_statuses.push(newTaskStatus);
       const addedTaskStatus =
         project.task_statuses[project.task_statuses.length - 1];
-      project.save();
-      return res.status(200).send({ response: addedTaskStatus });
+      project.save((err) => {
+        if (err) {
+          console.log("Error!", err);
+          return res.sendStatus(400);
+        }
+        return res.status(200).send({ response: addedTaskStatus });
+      });
     })
     .catch((err) => {
       console.log(err);

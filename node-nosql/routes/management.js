@@ -4,7 +4,7 @@ const projectsController = require("../controllers/projects");
 
 const tasksController = require("../controllers/tasks");
 // const invoicesController = require("../controllers/invoices");
-// const projectStatusesController = require("../controllers/projectStatuses");
+const projectStatusesController = require("../controllers/projectStatuses");
 
 const personsController = require("../controllers/persons");
 
@@ -30,7 +30,14 @@ router.get("/tasks/:id/project", tasksController.getTasksByProjectId);
 
 // router.get("/invoices/:id", invoicesController.getInvoice);
 
-// router.get("/project_statuses", projectStatusesController.getProjectStatuses);
+router.get(
+  "/company/project_statuses",
+  projectStatusesController.getProjectStatusesForCompany
+);
+router.get(
+  "/company/project_statuses/:statusId",
+  projectStatusesController.getProjectStatusById
+);
 
 //router.get("/persons", personsController.getPersons);
 
@@ -66,7 +73,10 @@ router.post("/projects", projectsController.createProject);
 
 // router.post("/invoices", invoicesController.createInvoice);
 
-// router.post("/project_statuses", projectStatusesController.createProjectStatus);
+router.post(
+  "/company/project_statuses",
+  projectStatusesController.createProjectStatus
+);
 
 router.post("/tasks", tasksController.createTask);
 
@@ -92,10 +102,10 @@ router.put("/projects/:id", projectsController.updateProject);
 
 // router.put("/invoices/:id", invoicesController.updateInvoice);
 
-// router.put(
-//   "/project_statuses/:id",
-//   projectStatusesController.updateProjectStatus
-// );
+router.put(
+  "/company/project_statuses/:statusId",
+  projectStatusesController.updateProjectStatus
+);
 
 router.put("/tasks/:id", tasksController.updateTask);
 
@@ -121,10 +131,10 @@ router.delete("/projects/:id", projectsController.deleteProject);
 
 // router.delete("/invoices/:id", invoicesController.deleteInvoice);
 
-// router.delete(
-//   "/project_statuses/:id",
-//   projectStatusesController.deleteProjectStatus
-// );
+router.delete(
+  "/company/project_statuses/:statusId",
+  projectStatusesController.deleteProjectStatus
+);
 
 router.delete("/tasks/:id", tasksController.deleteTask);
 
