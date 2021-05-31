@@ -37,6 +37,7 @@ const projectSchema = new Schema({
   },
   task_statuses: [statusSchema],
   invoices: [invoiceSchema],
+  locked_date: { type: Date, required: false },
 });
 
 module.exports = mongoose.model("Project", projectSchema);
