@@ -10,7 +10,6 @@ const statusSchema = new Schema({
     required: true,
   },
 });
-
 const invoiceSchema = new Schema({
   name: { type: String, required: true },
   notes: { type: String, required: false },
@@ -20,7 +19,6 @@ const invoiceSchema = new Schema({
   end_date: { type: Date, required: true },
   paid: { type: Boolean, required: false },
 });
-
 const projectSchema = new Schema({
   name: { type: String, required: true },
   description: { type: String, required: false },
