@@ -1,6 +1,10 @@
 const Task = require("../models/tasks");
 
-const { removeEmpty, mergeObjWithReqBody } = require("../util/helpers");
+const {
+  removeEmpty,
+  mergeObjWithReqBody,
+  ITEMS_PER_PAGE,
+} = require("../util/helpers");
 
 const filterReqBody = (reqBody) => {
   const obj = {
@@ -19,9 +23,12 @@ const filterReqBody = (reqBody) => {
 
 exports.getTasksByProjectId = (req, res, next) => {
   const projId = req.params.id;
+  const page = req.query.page;
   Task.find({
     project_id: projId,
   })
+    .skip((page - 1) * ITEMS_PER_PAGE)
+    .limit(ITEMS_PER_PAGE)
     .then((tasks) => {
       res.send({ tasks: tasks });
     })

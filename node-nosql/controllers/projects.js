@@ -1,5 +1,9 @@
 const Project = require("../models/projects");
-const { removeEmpty, mergeObjWithReqBody } = require("../util/helpers");
+const {
+  removeEmpty,
+  mergeObjWithReqBody,
+  ITEMS_PER_PAGE,
+} = require("../util/helpers");
 
 const filterReqBody = (reqBody) => {
   const obj = {
@@ -19,9 +23,13 @@ const filterReqBody = (reqBody) => {
 };
 
 exports.getProjects = (req, res, next) => {
+  const page = req.query.page;
+
   Project.find({
     company_id: req.session.person.company_id,
   })
+    .skip((page - 1) * ITEMS_PER_PAGE)
+    .limit(ITEMS_PER_PAGE)
     .then((projects) => {
       res.send({ response: projects });
     })

@@ -1,5 +1,9 @@
 const Project = require("../models/projects");
-const { mergeObjWithReqBody, removeEmpty } = require("../util/helpers");
+const {
+  mergeObjWithReqBody,
+  removeEmpty,
+  ITEMS_PER_PAGE,
+} = require("../util/helpers");
 
 const filterReqBody = (reqBody) => {
   const obj = {
@@ -15,9 +19,13 @@ const filterReqBody = (reqBody) => {
 };
 
 exports.getInvoices = (req, res, next) => {
+  const page = req.query.page;
+  console.log("gothere!", page);
   Project.find({
     company_id: req.person.company_id,
   })
+    .skip((page - 1) * ITEMS_PER_PAGE)
+    .limit(ITEMS_PER_PAGE)
     .then((projects) => {
       //get all the invoices from all the projects in a single array
       const invoices = [].concat(

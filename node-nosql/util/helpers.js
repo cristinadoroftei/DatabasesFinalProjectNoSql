@@ -1,3 +1,5 @@
+const ITEMS_PER_PAGE = 3;
+
 function removeEmpty(obj) {
   return Object.fromEntries(
     Object.entries(obj).filter(
@@ -14,3 +16,4 @@ function mergeObjWithReqBody(obj, reqBody) {
 
 exports.removeEmpty = removeEmpty;
 exports.mergeObjWithReqBody = mergeObjWithReqBody;
+exports.ITEMS_PER_PAGE = ITEMS_PER_PAGE;

@@ -34,7 +34,7 @@ router.get(
   projectStatusesController.getProjectStatusById
 );
 
-//router.get("/persons", personsController.getPersons);
+router.get("/persons", personsController.getPersons);
 
 router.get("/persons/:id", personsController.getPersonById);
 
