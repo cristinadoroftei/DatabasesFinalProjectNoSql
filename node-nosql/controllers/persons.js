@@ -47,6 +47,7 @@ exports.createPerson = (req, res, next) => {
   const person = new Person({
     ...filteredReqBody,
     password: bcrypt.hashSync(filteredReqBody.password, 12),
+    company_id: req.session.person.company_id,
   });
   person
     .save()
