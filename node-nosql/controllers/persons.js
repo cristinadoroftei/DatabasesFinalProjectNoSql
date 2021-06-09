@@ -1,7 +1,10 @@
 const Person = require("../models/persons");
 const bcrypt = require("bcrypt");
-const removeEmpty = require("../util/helpers").removeEmpty;
-const mergeObjWithReqBody = require("../util/helpers").mergeObjWithReqBody;
+const {
+  removeEmpty,
+  mergeObjWithReqBody,
+  ITEMS_PER_PAGE,
+} = require("../util/helpers");
 
 const filterReqBody = (reqBody) => {
   const obj = {
@@ -16,9 +19,12 @@ const filterReqBody = (reqBody) => {
   return removeEmpty(obj);
 };
 
-//TODO -> get them by the req.user.company_id
 exports.getPersons = (req, res, next) => {
+  const page = req.query.page;
+
   Person.find({ company_id: req.person.company_id })
+    .skip((page - 1) * ITEMS_PER_PAGE)
+    .limit(ITEMS_PER_PAGE)
     .then((persons) => res.send({ response: persons }))
     .catch((err) => {
       console.log("Error when fetching persons!", err);
@@ -41,6 +47,7 @@ exports.createPerson = (req, res, next) => {
   const person = new Person({
     ...filteredReqBody,
     password: bcrypt.hashSync(filteredReqBody.password, 12),
+    company_id: req.session.person.company_id,
   });
   person
     .save()

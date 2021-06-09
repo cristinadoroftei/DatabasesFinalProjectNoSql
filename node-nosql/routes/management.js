@@ -10,6 +10,7 @@ const taskStatusesController = require("../controllers/taskStatuses");
 const companiesController = require("../controllers/companies");
 const teamsController = require("../controllers/teams");
 const isAdmin = require("../util/validators").isAdmin;
+const { isAdminOrController } = require("../util/validators");
 
 const router = express.Router();
 
@@ -34,7 +35,7 @@ router.get(
   projectStatusesController.getProjectStatusById
 );
 
-//router.get("/persons", personsController.getPersons);
+router.get("/persons", personsController.getPersons);
 
 router.get("/persons/:id", personsController.getPersonById);
 
@@ -64,18 +65,23 @@ router.get("/teams", teamsController.getTeams);
 
 //POST
 
-router.post("/projects", projectsController.createProject);
+router.post("/projects", isAdminOrController, projectsController.createProject);
 
-router.post("/invoices/:projectId", invoicesController.createInvoice);
+router.post(
+  "/invoices/:projectId",
+  isAdminOrController,
+  invoicesController.createInvoice
+);
 
 router.post(
   "/company/project_statuses",
+  isAdminOrController,
   projectStatusesController.createProjectStatus
 );
 
-router.post("/tasks", tasksController.createTask);
+router.post("/tasks", isAdminOrController, tasksController.createTask);
 
-router.post("/persons", personsController.createPerson);
+router.post("/persons", isAdmin, isAdmin, personsController.createPerson);
 
 router.post(
   "/tasks/:taskId/time_registrations",
@@ -84,6 +90,7 @@ router.post(
 
 router.post(
   "/projects/:id/task_statuses",
+  isAdminOrController,
   taskStatusesController.createTaskStatus
 );
 
@@ -93,21 +100,27 @@ router.post("/teams", isAdmin, teamsController.createTeam);
 
 //PUT
 
-router.put("/projects/:id", projectsController.updateProject);
+router.put(
+  "/projects/:id",
+  isAdminOrController,
+  projectsController.updateProject
+);
 
 router.put(
   "/projects/:projectId/invoices/:invoiceId",
+  isAdminOrController,
   invoicesController.updateInvoice
 );
 
 router.put(
   "/company/project_statuses/:statusId",
+  isAdminOrController,
   projectStatusesController.updateProjectStatus
 );
 
-router.put("/tasks/:id", tasksController.updateTask);
+router.put("/tasks/:id", isAdminOrController, tasksController.updateTask);
 
-router.put("/persons/:id", personsController.updatePerson);
+router.put("/persons/:id", isAdmin, personsController.updatePerson);
 
 router.put(
   "/tasks/:taskId/time_registrations/:timeRegId",
@@ -116,30 +129,37 @@ router.put(
 
 router.put(
   "/projects/:projectId/task_statuses/:statusId",
+  isAdminOrController,
   taskStatusesController.updateTaskStatus
 );
 
-router.put("/companies/:id", companiesController.updateCompany);
+router.put("/companies/:id", isAdmin, companiesController.updateCompany);
 
 router.put("/teams/:teamId", isAdmin, teamsController.updateTeam);
 
 //DELETE
 
-router.delete("/projects/:id", projectsController.deleteProject);
+router.delete(
+  "/projects/:id",
+  isAdminOrController,
+  projectsController.deleteProject
+);
 
 router.delete(
   "/projects/:projectId/invoices/:invoiceId",
+  isAdminOrController,
   invoicesController.deleteInvoice
 );
 
 router.delete(
   "/company/project_statuses/:statusId",
+  isAdminOrController,
   projectStatusesController.deleteProjectStatus
 );
 
-router.delete("/tasks/:id", tasksController.deleteTask);
+router.delete("/tasks/:id", isAdminOrController, tasksController.deleteTask);
 
-router.delete("/persons/:id", personsController.deletePerson);
+router.delete("/persons/:id", isAdmin, personsController.deletePerson);
 
 router.delete(
   "/tasks/:taskId/time_registrations/:timeRegId",
@@ -148,10 +168,11 @@ router.delete(
 
 router.delete(
   "/projects/:projectId/task_statuses/:statusId",
+  isAdminOrController,
   taskStatusesController.deleteTaskStatus
 );
 
-router.delete("/companies/:id", companiesController.deleteCompany);
+router.delete("/companies/:id", isAdmin, companiesController.deleteCompany);
 
 router.delete("/teams/:teamId", isAdmin, teamsController.deleteTeam);
 
