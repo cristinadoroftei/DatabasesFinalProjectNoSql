@@ -10,6 +10,7 @@ exports.registerCompany = (req, res, next) => {
     .then((company) => {
       req.body.user_type = "ADMIN";
       req.body.company_id = company._id;
+      console.log("incompany!");
       createPerson(req, res, next);
     })
     .catch((error) => {
