@@ -39,9 +39,7 @@ exports.createCompany = (req, res, next) => {
       category: "DONE",
     },
   ];
-  const company = new Company(filteredReqBody);
-  return company
-    .save()
+  return Company.create(filteredReqBody)
     .then((result) => {
       console.log("Company created!");
       if (!req.body.from_signup) {
