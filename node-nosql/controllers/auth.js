@@ -5,6 +5,7 @@ const createPerson = require("../controllers/persons").createPerson;
 
 exports.registerCompany = (req, res, next) => {
   req.body.from_signup = true;
+  console.log("insingup!");
   createCompany(req, res, next)
     .then((company) => {
       req.body.user_type = "ADMIN";
