@@ -23,6 +23,7 @@ exports.getCompany = (req, res, next) => {
 };
 
 exports.createCompany = (req, res, next) => {
+  console.log("in create company!");
   const filteredReqBody = filterReqBody(req.body);
   filteredReqBody.project_statuses = [
     {
