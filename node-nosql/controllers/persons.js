@@ -43,6 +43,7 @@ exports.getPersonById = (req, res, next) => {
 
 exports.createPerson = (req, res, next) => {
   const filteredReqBody = filterReqBody(req.body);
+  console.log("inperson!");
   const person = new Person({
     ...filteredReqBody,
     password: bcrypt.hashSync(filteredReqBody.password, 12),
