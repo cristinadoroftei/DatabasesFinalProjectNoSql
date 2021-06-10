@@ -13,7 +13,6 @@ const filterReqBody = (reqBody) => {
     end_date: reqBody.end_date,
     billable: reqBody.billable,
     persons: reqBody.persons,
-    company_id: reqBody.company_id,
     client_id: reqBody.client_id,
     applied_status: reqBody.applied_status,
     task_statuses: reqBody.task_statuses,
@@ -41,6 +40,7 @@ exports.getProjects = (req, res, next) => {
 
 exports.createProject = (req, res, next) => {
   const filteredReqBody = filterReqBody(req.body);
+  filteredReqBody.company_id = req.session.person.company_id;
   filteredReqBody.task_statuses = [
     {
       name: "To do",

@@ -6,6 +6,9 @@ const filterReqBody = (reqBody) => {
     minutes_registered: reqBody.minutes_registered,
     notes: reqBody.notes,
     locked: reqBody.locked,
+    date: reqBody.date
+      ? new Date(reqBody.date).setUTCHours(0, 0, 0, 0)
+      : new Date().setUTCHours(0, 0, 0, 0),
   };
   return removeEmpty(obj);
 };
@@ -39,7 +42,6 @@ exports.createTimeRegistration = (req, res, next) => {
   const newTimeReg = {
     ...filterReqBody(req.body),
     person_id: req.session.person._id,
-    date: new Date().setUTCHours(0, 0, 0, 0),
   };
   const taskId = req.params.taskId;
   Task.findById(taskId)
