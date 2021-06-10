@@ -14,7 +14,6 @@ const filterReqBody = (reqBody) => {
     username: reqBody.username,
     password: reqBody.password,
     internal_cost: reqBody.internal_cost,
-    company_id: reqBody.company_id,
   };
   return removeEmpty(obj);
 };
@@ -47,7 +46,9 @@ exports.createPerson = (req, res, next) => {
   const person = new Person({
     ...filteredReqBody,
     password: bcrypt.hashSync(filteredReqBody.password, 12),
-    company_id: req.session.person.company_id,
+    company_id: req.body.from_signup
+      ? req.body.company_id
+      : req.session.person.company_id,
   });
   person
     .save()

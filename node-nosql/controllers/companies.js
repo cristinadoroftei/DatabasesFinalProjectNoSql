@@ -8,7 +8,6 @@ const filterReqBody = (reqBody) => {
     contact_name: reqBody.contact_name,
     contact_email: reqBody.contact_email,
     contact_phone: reqBody.contact_phone,
-    project_statuses: reqBody.project_statuses,
   };
   return removeEmpty(obj);
 };
